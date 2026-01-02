@@ -1,9 +1,9 @@
+import pandas as pd 
+import matplotlib.pyplot as plt
+
+###Constants 
 WF = ["Ammonia","Propane","n-Butane","Isobutane","Dichlorodifluoromethane","Chlorodifluoromethane","R-134a"]
-
-path = "/home/jaden-gillespie/Desktop/HeatPump/NIST_SAT"
-
-
-
+PATH = "/home/jaden-gillespie/Desktop/HeatPump/NIST_SAT"
 
 def main () :
     print(prompt()) 
@@ -20,8 +20,7 @@ def prompt () : #select and return the selected substance
 
 
 def txt_opn (fluid) : #open and parse NIST data, return (x,y) 
-    data = open(path+fluid+".txt", "r")
-    return 0
+    df = pd.read_table(PATH+fluid, delim_whitespace=True, header = 0)
 
 if __name__ == "__main__" :
     print(main())
