@@ -8,7 +8,9 @@ WF = [
       "n-Butane",
       "Isobutane",
       "Dichlorodifluoromethane",
-      "Chlorodifluoromethane","R-134a"
+      "Chlorodifluoromethane",
+      "R-134a",
+      "QUIT"
       ]
 
 PATH = "/home/jaden-gillespie/Desktop/HeatPump/NIST_SAT/"
@@ -49,17 +51,23 @@ ENTR_V = 18
 
 
 def main () :
-    working_fluid = prompt()
-    sat_data = txt_opn(working_fluid) 
-    TS_Plot(sat_data, working_fluid) 
-    
+    while (True) :
+        working_fluid = prompt()
+        if working_fluid == "QUIT" :
+            break 
+        sat_data = txt_opn(working_fluid) 
+        TS_Plot(sat_data, working_fluid) 
+        print()
+        print()
+        
+    rec_TS()    
+
     return 0 
 
 def prompt () : #select and return the selected substance 
     
     for i in range(len(WF)) : 
         print(i+1,WF[i])
-    
     print() 
     return WF[int(input("Input the working fluid by Number: \n"))-1] 
 
@@ -83,6 +91,8 @@ def TS_Plot (data, fluid) :
         color = 'magenta' 
     elif fluid == WF[5]:
         color = 'yellow' 
+    elif fluid == WF[6] :
+        color = 'orange'
     
     plt.plot(data[HEADERS[ENTR_L]], data[HEADERS[TEMP]], label = fluid, color = color)
     plt.plot(data[HEADERS[ENTR_V]], data[HEADERS[TEMP]], color=color)
@@ -93,7 +103,40 @@ def TS_Plot (data, fluid) :
     plt.legend()
     plt.savefig(PATH_PLT+"T-S of "+fluid)
     plt.show()
-     
+
+def rec_TS () : 
+    
+    for i in range(len(WF)-1) : 
+        
+        fluid = WF[i]
+        data = txt_opn(fluid)
+        
+        if fluid == WF[0] :
+            color = 'blue' 
+        elif fluid == WF[1]:
+            color = 'green'
+        elif fluid == WF[2]: 
+            color = 'red' 
+        elif fluid == WF[3]:
+            color = 'cyan' 
+        elif fluid == WF[4] :
+            color = 'magenta' 
+        elif fluid == WF[5]:
+            color = 'yellow' 
+        elif fluid == WF[6] :
+            color = 'orange'
+    
+        plt.plot(data[HEADERS[ENTR_L]], data[HEADERS[TEMP]], label = fluid, color = color)
+        plt.plot(data[HEADERS[ENTR_V]], data[HEADERS[TEMP]], color=color)
+        plt.title("T-S of "+fluid) 
+        plt.xlabel("Entropy (J/mol*K)")
+        plt.ylabel(HEADERS[TEMP]) 
+        plt.grid(True) 
+        plt.legend()
+        
+    plt.savefig(PATH_PLT+"T-S")
+    plt.show()     
+    
 if __name__ == "__main__" :
-    print(main())
+    print(main()) 
     
