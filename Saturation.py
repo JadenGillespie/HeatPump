@@ -2,13 +2,57 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 ###Constants 
-WF = ["Ammonia","Propane","n-Butane","Isobutane","Dichlorodifluoromethane","Chlorodifluoromethane","R-134a"]
-PATH = "/home/jaden-gillespie/Desktop/HeatPump/NIST_SAT"
+WF = [
+      "Ammonia",
+      "Propane",
+      "n-Butane",
+      "Isobutane",
+      "Dichlorodifluoromethane",
+      "Chlorodifluoromethane","R-134a"
+      ]
+
+PATH = "/home/jaden-gillespie/Desktop/HeatPump/NIST_SAT/"
+
+HEADERS = [
+    "Temperature (C)",
+    "Pressure (MPa)",
+    "Density (l, kg/m3)",
+    "Volume (l, m3/kg)",
+    "Internal Energy (l, kJ/mol)",
+    "Enthalpy (l, kJ/mol)",
+    "Entropy (l, J/mol*K)",
+    "Cv (l, J/mol*K)",
+    "Cp (l, J/mol*K)",
+    "Sound Speed (l, m/s)",
+    "Joule-Thomson (l, K/MPa)",
+    "Viscosity (l, uPa*s)",
+    "Thermal Conductivity (l, W/m*K)",
+    "Surface Tension (N/m)",
+    "Density (v, kg/m3)",
+    "Volume (v, m3/kg)",
+    "Internal Energy (v, kJ/mol)",
+    "Enthalpy (v, kJ/mol)",
+    "Entropy (v, J/mol*K)",
+    "Cv (v, J/mol*K)",
+    "Cp (v, J/mol*K)",
+    "Sound Speed (v, m/s)",
+    "Joule-Thomson (v, K/MPa)",
+    "Viscosity (v, uPa*s)",
+    "Thermal Conductivity (v, W/m*K)"
+]
+
+TEMP = 0
+ENTR_L = 6
+ENTR_V = 18
+
+
 
 def main () :
-    print(prompt()) 
+    working_fluid = prompt()
+    sat_data = txt_opn(working_fluid) 
+    TS_Plot(sat_data, working_fluid) 
+    
     return 0 
-
 
 def prompt () : #select and return the selected substance 
     
@@ -20,8 +64,34 @@ def prompt () : #select and return the selected substance
 
 
 def txt_opn (fluid) : #open and parse NIST data, return (x,y) 
-    df = pd.read_table(PATH+fluid, delim_whitespace=True, header = 0)
+    data = pd.read_table(PATH+fluid+".txt", sep='\s+', header = None, skiprows=1) #messy headers removed
+    data.columns = HEADERS
+    return data 
 
+def TS_Plot (data, fluid) : 
+    
+    if fluid == WF[0] :
+        color = 'blue' 
+    elif fluid == WF[1]:
+        color = 'green'
+    elif fluid == WF[2]: 
+        color = 'red' 
+    elif fluid == WF[3]:
+        color = 'cyan' 
+    elif fluid == WF[4] :
+        color = 'magenta' 
+    elif fluid == WF[5]:
+        color = 'yellow' 
+    
+    plt.plot(data[HEADERS[ENTR_L]], data[HEADERS[TEMP]], label = fluid, color = color)
+    plt.plot(data[HEADERS[ENTR_V]], data[HEADERS[TEMP]], color=color)
+    plt.title("T-S of "+fluid) 
+    plt.xlabel("Entropy (J/mol*K)")
+    plt.ylabel(HEADERS[TEMP]) 
+    plt.grid(True) 
+    plt.legend()
+    plt.show()
+        
 if __name__ == "__main__" :
     print(main())
     
