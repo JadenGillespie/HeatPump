@@ -128,7 +128,7 @@ def rec_TS () :
     
         plt.plot(data[HEADERS[ENTR_L]], data[HEADERS[TEMP]], label = fluid, color = color)
         plt.plot(data[HEADERS[ENTR_V]], data[HEADERS[TEMP]], color=color)
-        plt.title("T-S of "+fluid) 
+        plt.title("T-S of Fluids") 
         plt.xlabel("Entropy (J/mol*K)")
         plt.ylabel(HEADERS[TEMP]) 
         plt.grid(True) 
