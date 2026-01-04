@@ -12,6 +12,7 @@ WF = [
       ]
 
 PATH = "/home/jaden-gillespie/Desktop/HeatPump/NIST_SAT/"
+PATH_PLT = "/home/jaden-gillespie/Desktop/HeatPump/Plots/"
 
 HEADERS = [
     "Temperature (C)",
@@ -90,8 +91,9 @@ def TS_Plot (data, fluid) :
     plt.ylabel(HEADERS[TEMP]) 
     plt.grid(True) 
     plt.legend()
+    plt.savefig(PATH_PLT+"T-S of "+fluid)
     plt.show()
-        
+     
 if __name__ == "__main__" :
     print(main())
     
